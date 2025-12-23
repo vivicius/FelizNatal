@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Natal ❤️</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(#0b1d26, #102a3a);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 30px 15px;
+      font-size: 1.8rem;
+    }
+
+    .carousel {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .carousel img {
+      width: 100%;
+      flex-shrink: 0;
+      object-fit: cover;
+    }
+
+    .spotify {
+      margin: 30px 10px;
+    }
+
+    .message {
+      margin: 120px 20px;
+      text-align: center;
+      font-size: 2rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s ease;
+    }
+
+    .message.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-120vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎄 Pra pessoa que faz meus dias mais felizes 🎄</h1>
+
+  <div class="carousel">
+    <div class="carousel-track" id="track">
+      <img src="foto1.jpg" />
+      <img src="foto2.jpg" />
+      <img src="foto3.jpg" />
+    </div>
+  </div>
+
+  <div class="spotify">
+    <iframe style="border-radius:12px"
+      src="https://open.spotify.com/embed/track/7ETQjnmWqDVyDtNR5gYAWL?utm_source=generator&theme=0"
+      width="100%" height="352" frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy">
+    </iframe>
+  </div>
+
+  <div class="message" id="message">
+    ❤️ Feliz Natal e Feliz Ano Novo, meu amor! ❤️
+  </div>
+
+  <script>
+    const track = document.getElementById("track");
+    const images = track.children;
+    let index = 0;
+    let startX = 0;
+
+    function updateCarousel() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }
+
+    track.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+
+    track.addEventListener("touchend", e => {
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50 && index < images.length - 1) index++;
+      if (endX - startX > 50 && index > 0) index--;
+      updateCarousel();
+    });
+
+    window.addEventListener("scroll", () => {
+      const message = document.getElementById("message");
+      const rect = message.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 100) {
+        message.classList.add("visible");
+      }
+    });
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = Math.random() > 0.5 ? "❤️" : "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 8000);
+    }
+
+    setInterval(createHeart, 600);
+  </script>
+
+</body>
+</html>
